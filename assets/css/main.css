@@ -200,6 +200,16 @@ h6 {
 .header.header-show {
   left: 0;
 }
+@media (max-width: 576px) {
+  
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+  }
+}
+
 
 .header .header-toggle {
   color: var(--contrast-color);
