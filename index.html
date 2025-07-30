@@ -825,7 +825,7 @@
               <h3>Get In Touch</h3>
               <p>Have a question, idea, or project in mind? Send me a message below and I’ll get back to you soon!</p>
 
-              <form action="forms/contact.php" method="post" class="php-email-form">
+              <form id="contactForm" class="php-email-form">
                 <div class="row gy-4">
 
                   <div class="col-md-6">
@@ -901,6 +901,24 @@
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
+  <script>
+  const form = document.getElementById('contactForm');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    const res = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+
+    const result = await res.json();
+    alert(result.message);
+  });
+</script>
 
 </body>
 
