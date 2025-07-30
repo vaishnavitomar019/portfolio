@@ -825,7 +825,7 @@
               <h3>Get In Touch</h3>
               <p>Have a question, idea, or project in mind? Send me a message below and I’ll get back to you soon!</p>
 
-              <form id="contactForm" class="php-email-form">
+              <form id="contactForm" class="">
                 <div class="row gy-4">
 
                   <div class="col-md-6">
@@ -901,24 +901,49 @@
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
-  <script>
+<script>
   const form = document.getElementById('contactForm');
+  const loadingDiv = form.querySelector('.loading');
+  const errorDiv = form.querySelector('.error-message');
+  const sentDiv = form.querySelector('.sent-message');
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    // Hide all messages at start
+    loadingDiv.style.display = 'block';
+    errorDiv.style.display = 'none';
+    sentDiv.style.display = 'none';
 
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
-    const res = await fetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
 
-    const result = await res.json();
-    alert(result.message);
+      const result = await res.json();
+
+      loadingDiv.style.display = 'none';
+
+      if (result.success) {
+        sentDiv.style.display = 'block';
+        form.reset(); // optional: reset the form
+      } else {
+        errorDiv.innerText = result.message || 'Something went wrong.';
+        errorDiv.style.display = 'block';
+      }
+    } catch (err) {
+      loadingDiv.style.display = 'none';
+      errorDiv.innerText = 'Failed to send. Please try again later.';
+      errorDiv.style.display = 'block';
+    }
   });
 </script>
+
 
 </body>
 
