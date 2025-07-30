@@ -901,7 +901,7 @@
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
-<script>
+  <script>
   const form = document.getElementById('contactForm');
   const loadingDiv = form.querySelector('.loading');
   const errorDiv = form.querySelector('.error-message');
@@ -910,7 +910,7 @@
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // Hide all messages at start
+    // Hide previous messages
     loadingDiv.style.display = 'block';
     errorDiv.style.display = 'none';
     sentDiv.style.display = 'none';
@@ -931,7 +931,12 @@
 
       if (result.success) {
         sentDiv.style.display = 'block';
-        form.reset(); // optional: reset the form
+        form.reset();
+
+        // Auto-hide success message after 5 seconds
+        setTimeout(() => {
+          sentDiv.style.display = 'none';
+        }, 5000);
       } else {
         errorDiv.innerText = result.message || 'Something went wrong.';
         errorDiv.style.display = 'block';
